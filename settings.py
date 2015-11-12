@@ -8,13 +8,25 @@ import os
 
 MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
 MONGO_PORT = os.environ.get('MONGO_PORT', 27017)
-MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'user')
-MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD', 'user')
+# MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'user')
+# MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD', 'user')
 MONGO_DBNAME = os.environ.get('MONGO_DBNAME', 'arasaac')
 
 
 RESOURCE_METHODS = ['GET']
 ITEM_METHODS = ['GET']
+
+schema_image = {
+    # (https://github.com/nicolaiarocci/cerberus) for details.
+    'name': {
+        'type': 'string',
+        'minlength': 1,
+        'maxlength': 250,
+        'required': True,
+    },
+    # 'role' is a list, and can only contain values from 'allowed'.
+
+}
 
 
 images = {
@@ -24,9 +36,11 @@ images = {
     'cache_expires': 10,
 
     # most global settings can be overridden at resource level
-    'resource_methods': ['GET'],
+    'resource_methods': ['GET', 'POST'],
+    'schema': schema_image
 }
 
 DOMAIN = {
-'images': images,
+    'images': images,
+    'collections': {}
 }
