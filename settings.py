@@ -30,14 +30,43 @@ schema_image = {
 
 
 images = {
+    # 'title' tag used in item links.
     'item_title': 'image',
+
+    # by default the standard item entry point is defined as
+    # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
+    # additional read-only entry point. This way consumers can also perform GET
+    # requests at '/people/<lastname>/'.
+    'additional_lookup': {
+        'url': 'regex("[\w]+")',
+        'field': 'path'
+    },
+
+    # Schema definition, based on Cerberus grammar. Check the Cerberus project
+    # (https://github.com/nicolaiarocci/cerberus) for details.
+    'schema': {
+        'path': {
+            'type': 'string',
+            'minlength': 1,
+            'maxlength': 250,
+            'required': True,
+            'unique': True,
+         },
+        'license': {
+            'type': 'list',
+            'required': True,
+        },
+        # 'role' is a list, and can only contain values from 'allowed'.
+        'type': {
+            'type': 'objectid',
+        }
+        },
     # We choose to override global cache-control directives for this resource.
     'cache_control': 'max-age=10,must-revalidate',
     'cache_expires': 10,
 
     # most global settings can be overridden at resource level
     'resource_methods': ['GET', 'POST'],
-    'schema': schema_image
 }
 
 DOMAIN = {
