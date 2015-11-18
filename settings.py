@@ -69,7 +69,38 @@ images = {
     'resource_methods': ['GET', 'POST'],
 }
 
+catalog = {
+    # 'title' tag used in item links.
+    'item_title': 'catalog',
+
+    # by default the standard item entry point is defined as
+    # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
+    # additional read-only entry point. This way consumers can also perform GET
+    # requests at '/people/<lastname>/'.
+
+    # Schema definition, based on Cerberus grammar. Check the Cerberus project
+    # (https://github.com/nicolaiarocci/cerberus) for details.
+    'schema': {
+        'label': {
+            'type': 'dict',
+            'required': True,
+         },
+        'subtopicof': {
+            'type': 'objectid',
+        },
+        },
+    # We choose to override global cache-control directives for this resource.
+    'cache_control': 'max-age=10,must-revalidate',
+    'cache_expires': 10,
+
+    # most global settings can be overridden at resource level
+    'resource_methods': ['GET', 'POST'],
+}
+
+
+
 DOMAIN = {
     'images': images,
-    'collections': {}
+    'catalog':  catalog,
+
 }
