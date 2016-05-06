@@ -45,3 +45,5 @@ images = {
 
 
 DOMAIN = {'images': images, 'materials': {}, 'lse': {}}
+
+X_DOMAINS = "*"
