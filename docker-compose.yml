@@ -1,0 +1,15 @@
+arasaacapi:
+  build: .
+  ports:
+    - "5000:5000"
+  volumes:
+    - "./app/:/code"
+  links:
+    - mongo
+  command: python -u arasaac.py
+
+mongo:
+  image: mongo
+  volumes:
+    - "/srv/data/db:/data/db:rw"
+
