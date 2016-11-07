@@ -11,5 +11,5 @@ RUN pip3 install -r requirements.txt
 ENV PORT 5000
 EXPOSE  $PORT
 
-#CMD ["python", "-u", "arasaac.py"]
-ENTRYPOINT gunicorn --bind 0.0.0.0:5000 arasaac.py
+CMD ["python", "-u", "arasaac.py"]
+#ENTRYPOINT gunicorn --bind 0.0.0.0:5000 arasaac.py
