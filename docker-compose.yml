@@ -3,13 +3,12 @@ arasaacapi:
   ports:
     - "5000:5000"
   volumes:
-    - "./app/:/code"
+    - "./app/:/usr/api/"
   links:
     - mongo
-  command: python -u arasaac.py
 
 mongo:
-  image: mongo
+  image: mongo:3
   volumes:
-    - "/srv/data/db:/data/db:rw"
+    - "./data/db:/data/db:rw"
 

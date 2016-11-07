@@ -1,14 +1,15 @@
-FROM python:latest
+FROM python:3.5
+MAINTAINER Lmorillas <morillas@gmail.com>
 
-WORKDIR /code/
+RUN mkdir -p /usr/api
+COPY ./app/* /usr/api/
+WORKDIR /usr/api
 
-RUN pip3 install --upgrade pip
+RUN pip install --upgrade pip
+RUN pip3 install -r requirements.txt
 
-RUN pip3 install  eve
+ENV PORT 5000
+EXPOSE  $PORT
 
-EXPOSE 5000
-
-ADD ./app/* /code/
-COPY ./app/* /code/
-
-
+#CMD ["python", "-u", "arasaac.py"]
+ENTRYPOINT gunicorn --bind 0.0.0.0:5000 arasaac.py
