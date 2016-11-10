@@ -35,7 +35,9 @@ schema_authors = {
             'type': 'string'
         },
         'email': {
-            'type': 'string'
+            'type': 'string',
+            'required': False,
+            'nullable': True
         }
     }
 }
@@ -60,14 +62,18 @@ schema_words = {
             }
         },
         'type': {
-            'type': 'string'
+            'type': 'string',
+            'required': False,
+            'nullable': True
+
         },
         'categories': {
             'type': 'list',
             'schema': {
                 'type': 'string'
-            }
+            },
+            'required': False,
+            'nullable': True
         }
     }
 }
-

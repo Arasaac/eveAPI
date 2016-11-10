@@ -1,7 +1,7 @@
 # coding: utf-8
 
-MONGO_HOST = 'mongo'
-#MONGO_HOST = 'localhost'
+#MONGO_HOST = 'mongo'
+MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 # MONGO_USERNAME = 'user'
 # MONGO_PASSWORD = 'user'
