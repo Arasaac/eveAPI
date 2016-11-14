@@ -96,6 +96,13 @@ def tabla_materiales():
 
     return materiales
 
+def tabla_licencias():
+    sql = "select  id_licencia, licencia from licencias"
+    return launch_sql( cur, sql, fields=['id', 'name'])
+
+def licencias_json():
+    lics = tabla_licencias()
+    return json.dumps([li._asdict() for li in lics], default=date_handler)
 
 def tabla_autores():
     sql = "select  id_autor, autor, email_autor from autores"
@@ -104,6 +111,7 @@ def tabla_autores():
 def autores_json():
     ims = tabla_autores()
     return json.dumps([im._asdict() for im in ims], default=date_handler)
+
 
 def tabla_edad():
     cur.execute("select  id_edad_material, edad_material from material_edad")
@@ -147,9 +155,8 @@ def date_handler(obj):
 
 def imagenes():
     #sql = "select id_imagen, imagen, id_tipo_imagen, id_licencia, tags_imagen from  imagenes"
-    sql = "select id_imagen, imagen, id_tipo_imagen, id_licencia, fecha_creacion, \
-    ultima_modificacion, estado, id_autor from  imagenes"
-    return launch_sql(cur, sql)
+    sql = "select id_imagen, imagen, id_tipo_imagen, id_licencia, id_autor from  imagenes"
+    return launch_sql(cur, sql, fields=['id', 'path', 'type', 'licence',  'author'])
 
 def imagenes_json():
     ims = imagenes()
@@ -184,54 +191,25 @@ def json_to_csv(json_data, f):
 
 def tipos_imagenes():
     sql = "select id_tipo, tipo_imagen_es  from tipos_imagen"
-    cur.execute(sql)
-    keys = "id label"
-    lista_tipos = []
-    for ti in cur.fetchall():
-        d = {}
-        d['id'] = 'ti' + str(ti[0])
-        d['label'] = ti[1]
-        d['type'] = 'ti'
-        lista_tipos.append(d)
-    json.dump({'items': lista_tipos}, open('tipos_imagenes.json', 'w'), encoding='latin1')
+    return launch_sql(cur, sql, fields=['id', 'name'])
+
+def tipos_json():
+    ims = tipos_imagenes()
+    return json.dumps([im._asdict() for im in ims], default=date_handler)
 
 def palabras():
     sql = """select palabras.id_palabra, palabra, id_imagen from palabras, palabra_imagen
     where palabras.id_palabra = palabra_imagen.id_palabra
     """
-    sql1 = """select  id_palabra, palabra from palabras"""
-    sql2 = """select  id_palabra, id_imagen  from palabra_imagen"""
-    sql3 = 'select id_palabra, id_subtema from palabra_subtema'
+    # sql1 = """select  id_palabra, palabra from palabras"""
+    # sql2 = """select  id_palabra, id_imagen  from palabra_imagen"""
+    # sql3 = 'select id_palabra, id_subtema from palabra_subtema'
 
-    ps = [p for p in cur.fetchall()]
+    return launch_sql(cur, sql, fields=['id', 'word', 'im'])
 
-    k = "id label ims cat type".split()
-    cur.execute(sql1)
-    lista_pals = [dict(zip(k, [l[0], l[1], [], [], 'p'])) for l in cur.fetchall()]
-    d_pals = {}
-    for d in lista_pals:
-        d_pals[d['id']] = d
-    cur.execute(sql2)
-    print( 'palabra imagen')
-    for l in cur.fetchall():
-        pal = d_pals.get(l[0])
-        if pal:
-            pal['ims'].append(l[1])
-        else:
-            print (l)
-    print( 'palabra subtema')
-    cur.execute(sql3)
-    for l in cur.fetchall():
-        pal = d_pals.get(l[0])
-        if pal:
-            pal['cat'].append('c'+str(l[1]))
-        else:
-            print (l)
-    result = d_pals.values()
-    for d in result:
-        d['id'] = 'p'+str(d['id'])
-    return result
-
+def palabras_json():
+    pals = palabras()
+    return json.dumps([pal._asdict() for pal in pals], default=date_handler)
 
 
 def categorias():
@@ -256,13 +234,22 @@ def categorias():
 
 
 
-
-
-'''
 if __name__ == '__main__':
-    datos = {'items': tabla_tipo()}
-    json.dump(datos, open('tipos.json', 'w'))
-'''
+    '''
+    lic = licencias_json()
+    open('licences.json', 'w').write(lic)
+
+    ims = imagenes_json()
+    open('images.json', 'w').write(ims)
+
+    tims = tipos_json()
+    open('timages.json', 'w').write(tims)
+    '''
+    pals = palabras_json()
+    open('palabras.json', 'w').write(pals)
+
+
+
 
 '''
 Imagenes no en palabras: {72, 1648, 1649, 1668, 2010, 2118}
