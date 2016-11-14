@@ -10,7 +10,7 @@ def get_id(response):
 
 DATA = '../utils/'
 
-authors = json.load(open('authors.json'))
+authors = json.load(open(DATA + 'authors.json'))
 keys_auth = {}
 with app.test_request_context():
     for payload in authors:
