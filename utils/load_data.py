@@ -1,8 +1,14 @@
 from eve import Eve
 from eve.methods.post import post_internal
 import json
+import os
 
 ims = json.load(open('authors.json'))
+
+SETTINGS_PATH = '../app'
+
+os.chdir(SETTINGS_PATH)
+app = Eve()
 
 app = Eve()
 
