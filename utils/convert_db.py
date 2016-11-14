@@ -9,7 +9,7 @@ import datetime
 # configure
 DB_HOST = 'localhost'
 DB_USER = 'root'
-DB_PASS = 'morico'
+DB_PASS = 'root'
 DB_NAME = 'arasaac'
 connection_data = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*connection_data)
