@@ -3,6 +3,10 @@ from eve.methods.post import post_internal
 import json
 import os
 
+SETTINGS_PATH = '../app'
+
+os.chdir(SETTINGS_PATH)
+
 app = Eve()
 
 def get_id(response):
@@ -10,7 +14,9 @@ def get_id(response):
 
 DATA = '../utils/'
 
+
 authors = json.load(open(DATA + 'authors.json'))
+
 keys_auth = {}
 with app.test_request_context():
     for payload in authors:
