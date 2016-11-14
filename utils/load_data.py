@@ -9,12 +9,18 @@ os.chdir(SETTINGS_PATH)
 
 app = Eve()
 
+def list_to_dict(l):
+	data = {}
+	for k in l:
+		data[k] = l[k]
+
 def get_id(response):
     return response[0].get('_id').__str__()
 
 DATA = '../utils/'
 
-authors = json.load(open( DATA +'authors.json'))
+authors = json.load(open( DATA + 'authors.json'))
+
 keys_auth = {}
 with app.test_request_context():
     for payload in authors:

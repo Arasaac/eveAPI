@@ -41,6 +41,7 @@ palabra_imagen.id_palabra = palabras.id_palabra
 GROUP BY imagenes.imagen'''
 
 
+
 cur.execute(sqles)
 ims = {}
 
