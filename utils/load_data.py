@@ -23,11 +23,13 @@ def get_id(response):
 def data_to_payload(data):
     '''imagen, id_tipo_imagen, fecha_creacion, ultima_modificacion, autor, web_autor,
     licencia, traduccion, definicion_traduccion'''
+    url_videos = 'http://arasaac.org/repositorio/LSE_acepciones/'
+    url_images ='http://arasaac.org/repositorio/originales/'
     d = {}
     if data.get('id_tipo_imagen') == 11:
-        d['url'] = data.get('imagen')
+        d['url'] = url_videos + data.get('imagen')
     else:
-        d['url'] = data.get('imagen')
+        d['url'] = url_images + data.get('imagen')
     d['author'] = {}
     d['author']['name'] = data.get('autor')
     if data.get('web_autor'):
@@ -44,6 +46,7 @@ def data_to_payload(data):
     return d
 
 def get_names(data):
+    ''' Not used now '''
     name = {'downloads' : 0, 'keyword' : data.get('traduccion')}
     meaning = data.get('definicion_traduccion')
     if meaning:
@@ -53,24 +56,21 @@ def get_names(data):
 keys_im = {}
 with app.test_request_context():
     for d in data:
-        url = d.get('imagen')
+        payload = data_to_payload(d)
+        url = payload.get('url')
         if url in keys_im:
             original = get_document('images', concurrency_check=False, **{'url':url})
-            original['names'].append(get_names(d))
+            original['names'].extend(payload.get('names'))
             response = patch_internal('images', {'names':original['names']}, **{'url':url})
             if response[-1] == 201 or response[-1] == 200:
                 #print ('modificado ',  url)
                 pass
             else:
                 print ('Error modif.-> ', response, url )
-
-
         else:
-            payload = data_to_payload(d)
             response = post_internal('images', payload)
             if response[-1] == 201:
                 #print ('añadido ',  url)
                 keys_im[url] = get_id(response)
             else:
                 print ('Error -> ', response, url )
-
