@@ -1,87 +1,76 @@
+# coding: utf-8
+
 from eve import Eve
 from eve.methods.post import post_internal
+from eve.methods.patch import patch_internal
+from eve.methods.common import get_document
 import json
 import os
 
-SETTINGS_PATH = '../app'
-
-os.chdir(SETTINGS_PATH)
-
 app = Eve()
 
-def list_to_dict(l):
-	data = {}
-	for k in l:
-		data[k] = l[k]
 
 def get_id(response):
     return response[0].get('_id').__str__()
 
 DATA = '../utils/'
 
-authors = json.load(open( DATA + 'authors.json'))
+data = json.load(open( DATA + 'all_data.json'))
 
-keys_auth = {}
-with app.test_request_context():
-    for payload in authors:
-        k = payload.pop('id')
-        if not payload.get('email'):
-            payload.pop('email')
-        response = post_internal('authors', payload)
-        if response[-1] == 201:
-            keys_auth[k] = get_id(response)
-        else:
-            print ('Error -> ', response[-1], k )
-            break
+def get_id(response):
+    return response[0].get('_id').__str__()
 
-json.dump(keys_auth, open(DATA + 'authors_keys.json', 'w'))
+def data_to_payload(data):
+    '''imagen, id_tipo_imagen, fecha_creacion, ultima_modificacion, autor, web_autor,
+    licencia, traduccion, definicion_traduccion'''
+    d = {}
+    if data.get('id_tipo_imagen') == 11:
+        d['url'] = data.get('imagen')
+    else:
+        d['url'] = data.get('imagen')
+    d['author'] = {}
+    d['author']['name'] = data.get('autor')
+    if data.get('web_autor'):
+        d['author']['web'] = data.get('web_autor')
+    d['counter'] = 0
+    d['license'] = data.get('licencia')
+    d['names'] = []
+    name = {'downloads' : 0, 'keyword' : data.get('traduccion')}
+    meaning = data.get('definicion_traduccion')
+    if meaning:
+        name['meaning'] = meaning
+    d['names'].append(name)
+    d['type'] = data.get('tipo_imagen_en')
+    return d
 
-
-# Load Images
-images = json.load(open(DATA + 'images.json'))
-timages = json.load(open(DATA + 'timages.json'))
-licences = json.load(open(DATA + 'licences.json'))
-
-tim = {} # dicc imágenes
-for t in timages:
-    tim[t.get('id')] = t.get('name')
-
-lic = {}
-for li in licences:
-    lic[li.get('id')] = li.get('name')
+def get_names(data):
+    name = {'downloads' : 0, 'keyword' : data.get('traduccion')}
+    meaning = data.get('definicion_traduccion')
+    if meaning:
+        name['meaning'] = meaning
+    return name
 
 keys_im = {}
 with app.test_request_context():
-    for payload in images:
-        k = payload.pop('id')
-        if payload['author'] == 1:
-            payload['author'] = 2
-        payload['license'] = lic[payload.pop('licence')]
-        payload['url'] = payload.pop('path')
-        payload['author'] = keys_auth[payload['author']]
-        payload['type'] = tim.get(payload['type'])
+    for d in data:
+        url = d.get('imagen')
+        if url in keys_im:
+            original = get_document('images', concurrency_check=False, **{'url':url})
+            original['names'].append(get_names(d))
+            response = patch_internal('images', {'names':original['names']}, **{'url':url})
+            if response[-1] == 201 or response[-1] == 200:
+                #print ('modificado ',  url)
+                pass
+            else:
+                print ('Error modif.-> ', response, url )
 
-        response = post_internal('images', payload)
-        if response[-1] == 201:
-            keys_im[k] = get_id(response)
+
         else:
-            print ('Error -> ', response[-1], k )
-            break
-json.dump(keys_im, open('ims_keys.json', 'w'))
+            payload = data_to_payload(d)
+            response = post_internal('images', payload)
+            if response[-1] == 201:
+                #print ('añadido ',  url)
+                keys_im[url] = get_id(response)
+            else:
+                print ('Error -> ', response, url )
 
-
-# Load Words
-words = json.load(open(DATA + 'palabras_dict.json')).values()
-
-with app.test_request_context():
-    for payload in words:
-        images = payload.pop('ims')
-        payload['images'] = [keys_im[i] for i in images]
-        k = payload.pop('id')
-        payload['lang'] = 'es'
-        response = post_internal('words', payload)
-        if response[-1] == 201:
-            pass
-        else:
-            print ('Error -> ', response[-1], k )
-            break

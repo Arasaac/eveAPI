@@ -230,6 +230,20 @@ def categorias():
     dtes.extend(dtes2)
     return dtes
 
+def all_images_data(cur):
+    '''English words '''
+    sql = '''SELECT imagen, id_tipo_imagen, fecha_creacion, ultima_modificacion, autor, web_autor,
+    licencia, traduccion, definicion_traduccion, tipo_imagen_en
+    FROM `imagenes`, `autores`, `licencias`, palabra_imagen, traducciones_7, tipos_imagen
+    WHERE imagenes.id_autor = autores.id_autor and imagenes.id_licencia = licencias.id_licencia
+    and palabra_imagen.id_imagen = imagenes.id_imagen and
+    traducciones_7.id_palabra = palabra_imagen.id_palabra and
+    imagenes.id_tipo_imagen = tipos_imagen.id_tipo'''
+    return launch_sql(cur, sql)
+
+def all_images_to_json(cur):
+    data = all_images_data(cur)
+    json.dump([d._asdict() for d in data], open('all_data.json', 'w' ), default=date_handler)
 
 
 

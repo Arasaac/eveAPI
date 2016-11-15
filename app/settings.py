@@ -5,7 +5,7 @@ MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 # MONGO_USERNAME = 'user'
 # MONGO_PASSWORD = 'user'
-MONGO_DBNAME = 'arasaacx'
+MONGO_DBNAME = 'arasaac2'
 
 # RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 RESOURCE_METHODS = ['GET']
