@@ -12,4 +12,4 @@ ENV PORT 5000
 EXPOSE  $PORT
 
 #CMD ["python", "-u", "arasaac.py"]
-ENTRYPOINT gunicorn --bind 0.0.0.0:5000 arasaac:app
+ ENTRYPOINT gunicorn --bind 0.0.0.0:5000 arasaac:app

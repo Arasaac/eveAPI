@@ -1,11 +1,27 @@
 # coding: utf-8
+import os
+
+if os.environ.get('TESTING') is None:
+    MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
+    MONGO_PORT = int(os.environ.get('MONGO_PORT', 27017))
+    MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'user')
+    MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD', 'pw')
+    MONGO_DBNAME = os.environ.get('MONGO_DBNAME', 'arasaac2')
+else:
+    MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
+    MONGO_PORT = int(os.environ.get('MONGO_PORT', 27017))
+    MONGO_DBNAME = os.environ.get('MONGO_DBNAME', 'arasaac2')
+
+# $PORT is defined if we are hosted on Heroku
+if os.environ.get('PORT') is None:
+    DEBUG = True
 
 #MONGO_HOST = 'mongo'
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 # MONGO_USERNAME = 'user'
 # MONGO_PASSWORD = 'user'
-MONGO_DBNAME = 'arasaac2'
+MONGO_DBNAME = MONGO_DBNAME
 
 # RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 RESOURCE_METHODS = ['GET']
@@ -44,3 +60,17 @@ images = {
 DOMAIN = {'images': images}
 
 X_DOMAINS = "*"
+
+URL_PREFIX = 'api'
+#API_VERSION = 'v1'
+
+# Accept-Language request headers
+LANGUAGE_DEFAULT = 'en'
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español',
+    'fr': 'French',
+    'pt': 'Portuguese',
+    'ar': 'Arabic'
+}
+
