@@ -29,7 +29,7 @@ RESOURCE_METHODS = ['GET']
 # Enable reads (GET), edits (PATCH), replacements (PUT) and deletes of
 # individual items  (defaults to read-only item access).
 #ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
-ITEM_METHODS = ['GET']
+#ITEM_METHODS = ['GET']
 
 from schemas import schema_images
 
@@ -54,15 +54,19 @@ images = {
     # most global settings can be overridden at resource level
     'resource_methods': ['GET'],
 
-    'schema': schema_images.get('schema')
+    'schema': schema_images.get('schema'),
+    # Test with text index
+    'mongo_indexes' : {'text': ([('names.keyword', "text"), ("names.meaning", "text")], 
+    { "default_language": "english" }),
+    }
 }
 
 DOMAIN = {'images': images}
 
 X_DOMAINS = "*"
 
-URL_PREFIX = 'api'
-#API_VERSION = 'v1'
+#URL_PREFIX = 'api'
+#API_VERSION = 'v1' 
 
 # Accept-Language request headers
 LANGUAGE_DEFAULT = 'en'
