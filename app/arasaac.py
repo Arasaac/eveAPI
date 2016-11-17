@@ -8,7 +8,6 @@ SETTINGS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settin
 
 app = Eve(settings=SETTINGS_PATH)
 
-app.on_pre_GET += pre_get_callback
 
 # swagger config
 app.register_blueprint(swagger)
