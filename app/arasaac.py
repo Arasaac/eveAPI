@@ -5,7 +5,27 @@ import os
 
 SETTINGS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.py')
 
+
+def pre_get_callback(resource, request, lookup):
+
+    print('A GET request on the "%s" endpoint has just been received!' % resource)
+
+# Pre-Request Event Hook example
+def before_returning_items(request, lookup):
+    try:
+        desiredLang = request.accept_languages.best_match(LANGUAGES.keys(),
+                                                          LANGUAGE_DEFAULT)
+        print("The best matched Accept-Language Header is: " + desiredLang +
+              " (" + LANGUAGES.get(desiredLang) + ")")
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+
+
+
 app = Eve(settings=SETTINGS_PATH)
+
+app.on_pre_GET += pre_get_callback
 
 # swagger config
 app.register_blueprint(swagger)
