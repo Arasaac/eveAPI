@@ -56,9 +56,9 @@ images = {
 
     'schema': schema_images.get('schema'),
     # Test with text index
-    #'mongo_indexes' : {'text': ([('names.keyword', "text"), ("names.meaning", "text")],
-    #{ "default_language": "english" }),
-    #}
+    'mongo_indexes' : {'text': ([('names.keyword', "text")], #("names.meaning", "text")],
+    { "default_language": "english" }),
+    }
 }
 
 DOMAIN = {'images': images}
