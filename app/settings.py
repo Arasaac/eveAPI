@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 
-if os.environ.get('TESTING') is None:
+if os.environ.get('PRODUCTION') is True:
     MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
     MONGO_PORT = int(os.environ.get('MONGO_PORT', 27017))
     MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'user')
@@ -11,17 +11,7 @@ else:
     MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
     MONGO_PORT = int(os.environ.get('MONGO_PORT', 27017))
     MONGO_DBNAME = os.environ.get('MONGO_DBNAME', 'arasaac2')
-
-# $PORT is defined if we are hosted on Heroku
-if os.environ.get('PORT') is None:
     DEBUG = True
-
-#MONGO_HOST = 'mongo'
-MONGO_HOST = 'localhost'
-MONGO_PORT = 27017
-# MONGO_USERNAME = 'user'
-# MONGO_PASSWORD = 'user'
-MONGO_DBNAME = MONGO_DBNAME
 
 # RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 RESOURCE_METHODS = ['GET']
@@ -29,7 +19,7 @@ RESOURCE_METHODS = ['GET']
 # Enable reads (GET), edits (PATCH), replacements (PUT) and deletes of
 # individual items  (defaults to read-only item access).
 #ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
-#ITEM_METHODS = ['GET']
+ITEM_METHODS = ['GET']
 
 from schemas import schema_images
 
@@ -56,15 +46,18 @@ images = {
 
     'schema': schema_images.get('schema'),
     # Test with text index
-    #'mongo_indexes' : {'text': ([('names.keyword', "text"), ("names.meaning", "text")],
-    #{ "default_language": "english" }),
-    #}
+    'mongo_indexes' : {'text': ([('names.keyword', "text"), ],
+    {"default_language": "english" },
+    ),
+    }
 }
 
 DOMAIN = {'images': images}
 
+# CORS
 X_DOMAINS = "*"
 
+# PATHS ?
 #URL_PREFIX = 'api'
 #API_VERSION = 'v1'
 
@@ -78,3 +71,20 @@ LANGUAGES = {
     'ar': 'Arabic'
 }
 
+'''
+
+db.images.ensureIndex(
+                     {
+                       names.keyword: "text",
+                       names.meaning: "text",
+                     },
+                     {
+                       weights: {
+                                  names.meaning: 1,
+                                  names.keyword:100,
+                                },
+                       name: "TextIndex",
+
+                     }
+                   )
+'''
