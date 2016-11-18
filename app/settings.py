@@ -46,8 +46,9 @@ images = {
 
     'schema': schema_images.get('schema'),
     # Test with text index
-    'mongo_indexes' : {'text': ([('names.keyword', "text"), ],
-    {"default_language": "english" },
+    'mongo_indexes' : {'text': ([('names.keyword', "text"), ('names.meaning', "text")],
+    {"default_language": "english", "weights": {"names.meaning": 1, "names.keyword":10},
+    },
     ),
     }
 }
@@ -72,18 +73,18 @@ LANGUAGES = {
 }
 
 '''
-
+Example for index
 db.images.ensureIndex(
                      {
                        names.keyword: "text",
-                       names.meaning: "text",
+                       names.meaning: "text"
                      },
                      {
-                       weights: {
+                       "weights": {
                                   names.meaning: 1,
-                                  names.keyword:100,
+                                  names.keyword:10
                                 },
-                       name: "TextIndex",
+                       "name": "TextIndex"
 
                      }
                    )
