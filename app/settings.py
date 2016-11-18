@@ -3,6 +3,7 @@
 import os
 
 if os.environ.get('PRODUCTION') is True:
+    #TODO
     MONGO_HOST = os.environ.get('MONGO_HOST', 'localhost')
     MONGO_PORT = int(os.environ.get('MONGO_PORT', 27017))
     MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'user')
@@ -46,6 +47,7 @@ images = {
     'resource_methods': ['GET'],
 
     'schema': schema_images.get('schema'),
+
     # Test with text index
     'mongo_indexes' : {'text': ([('names.keyword', "text"), ('names.meaning', "text")],
     {"default_language": "english", "weights": {"names.meaning": 1, "names.keyword":10},
@@ -72,6 +74,7 @@ LANGUAGES = {
     'pt': 'Portuguese',
     'ar': 'Arabic'
 }
+
 
 '''
 Example for index

@@ -1,13 +1,10 @@
 from eve import Eve
 from eve_swagger import swagger, add_documentation
-
 import os
 
 SETTINGS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.py')
 
-
 app = Eve(settings=SETTINGS_PATH)
-
 
 # swagger config
 app.register_blueprint(swagger)

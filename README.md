@@ -1,9 +1,7 @@
 # eveAPI
-New Arasaac API built with eve (http://python-eve.org/)
+New API for http:arasaac.org built with eve (http://python-eve.org/)
 
 
-## Dump mongo db
-mongodump --db arasaac
+## status
 
-## Restore mongo db
-mongorestore arasaac --db arasaac
+* 
