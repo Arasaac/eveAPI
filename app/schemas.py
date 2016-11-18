@@ -3,16 +3,19 @@ schema_images = {
         'author': {
             'schema': {
                 'name': {
-                    'type': 'string'
+                    'type': 'string',
+                    'description': 'Name of the author'
                 },
                 'web': {
-                    'type': 'string'
+                    'type': 'string',
+                    'description': 'Web of the author'
                 }
             },
             'type': 'dict'
         },
         'counter': {
-            'type': 'integer'
+            'type': 'integer',
+            'description': 'number of times accessed (for improving the searches)'
         },
         'creationDate': {
             'type': 'string'
@@ -24,22 +27,28 @@ schema_images = {
             'type': 'string'
         },
         'names': {
+            'description': 'list of names of the image',
             'schema': {
                 'schema': {
                     'downloads': {
-                        'type': 'integer'
+                        'type': 'integer',
+                        'description': 'number of times downloaded using this name',
                     },
                     'keyword': {
-                        'type': 'string'
+                        'type': 'string',
+                        'description': 'name'
                     },
                     'locution': {
-                        'type': 'string'
+                        'type': 'string',
+                        'description': 'url of the locution (sound)'
                     },
                     'meaning': {
-                        'type': 'string'
+                        'type': 'string',
+                        'description': 'descriptive meaning'
                     },
                     'sl': {
-                        'type': 'string'
+                        'type': 'string',
+                        'description': 'video in sing language'
                     },
                     'type': {
                         'type': 'string'

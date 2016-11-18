@@ -45,6 +45,7 @@ images = {
 
     # most global settings can be overridden at resource level
     'resource_methods': ['GET'],
+    'description': "Pictograms, sounds and videos for Augmentative Communication",
 
     'schema': schema_images.get('schema'),
 
@@ -93,3 +94,4 @@ db.images.ensureIndex(
                      }
                    )
 '''
+
